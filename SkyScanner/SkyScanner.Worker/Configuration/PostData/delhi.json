@@ -1,0 +1,57 @@
+{
+   "market":"IE",
+   "currency":"EUR",
+   "locale":"en-GB",
+   "cabin_class":"economy",
+   "prefer_directs":false,
+   "trip_type":"return",
+   "legs":[
+      {
+         "origin":"DUB",
+         "destination":"DEL",
+         "date":"StartDateOfJourney",
+         "return_date":"EndDateOfJourney",
+         "add_alternative_origins":false,
+         "add_alternative_destinations":false
+      }
+   ],
+   "origin":{
+      "id":"DUB",
+      "airportId":"DUB",
+      "name":"Dublin",
+      "cityId":"DUBL",
+      "cityName":"Dublin",
+      "countryId":"IE",
+      "type":"Airport",
+      "centroidCoordinates":[
+         -6.252222,
+         53.4325
+      ]
+   },
+   "destination":{
+      "id":"DEL",
+      "airportId":"DEL",
+      "name":"New Delhi",
+      "cityId":"IDEL",
+      "cityName":"New Delhi",
+      "countryId":"IN",
+      "type":"Airport",
+      "centroidCoordinates":[
+         77.100833,
+         28.573611
+      ]
+   },
+   "outboundDate":"StartDateOfJourney",
+   "inboundDate":"EndDateOfJourney",
+   "adults":1,
+   "child_ages":[
+
+   ],
+   "options":{
+      "include_unpriced_itineraries":true,
+      "include_mixed_booking_options":true
+   },
+   "state":{
+
+   }
+}
