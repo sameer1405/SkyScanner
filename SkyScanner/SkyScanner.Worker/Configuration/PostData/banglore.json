@@ -1,0 +1,57 @@
+{  
+   "market":"IE",
+   "currency":"EUR",
+   "locale":"en-GB",
+   "cabin_class":"economy",
+   "prefer_directs":false,
+   "trip_type":"return",
+   "legs":[  
+      {  
+         "origin":"DUB",
+         "destination":"BLR",
+         "date":"StartDateOfJourney",
+         "return_date":"EndDateOfJourney",
+         "add_alternative_origins":false,
+         "add_alternative_destinations":false
+      }
+   ],
+   "origin":{  
+      "id":"DUB",
+      "airportId":"DUB",
+      "name":"Dublin",
+      "cityId":"DUBL",
+      "cityName":"Dublin",
+      "countryId":"IE",
+      "type":"Airport",
+      "centroidCoordinates":[  
+         -6.252222,
+         53.4325
+      ]
+   },
+   "destination":{  
+      "id":"BLR",
+      "airportId":"BLR",
+      "name":"Bengaluru",
+      "cityId":"IBLR",
+      "cityName":"Bengaluru",
+      "countryId":"IN",
+      "type":"Airport",
+      "centroidCoordinates":[  
+         77.705269,
+         13.199588
+      ]
+   },
+   "outboundDate":"StartDateOfJourney",
+   "inboundDate":"EndDateOfJourney",
+   "adults":1,
+   "child_ages":[  
+
+   ],
+   "options":{  
+      "include_unpriced_itineraries":true,
+      "include_mixed_booking_options":true
+   },
+   "state":{  
+
+   }
+}
