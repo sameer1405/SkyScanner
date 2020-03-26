@@ -1,15 +1,15 @@
-﻿{
+{
   "destination": {
-    "id": "BOM",
-    "airportId": "BOM",
-    "name": "Mumbai",
-    "cityId": "IBOM",
-    "cityName": "Mumbai",
-    "countryId": "IN",
+    "id": "AMS",
+    "airportId": "AMS",
+    "name": "Amsterdam",
+    "cityId": "AMST",
+    "cityName": "Amsterdam",
+    "countryId": "NL",
     "type": "Airport",
     "centroidCoordinates": [
-      72.851667,
-      19.088056
+      4.768056,
+      52.308333
     ]
   },
   "origin": {
@@ -29,30 +29,31 @@
   "cabin_class": "economy",
   "cabinClass": "ECONOMY",
   "inboundDate": "EndDateOfJourney",
-  "legs": [
-    {
-      "origin": "DUB",
-      "destination": "BOM",
-      "date": "StartDateOfJourney",
-      "return_date": "EndDateOfJourney",
-      "add_alternative_origins": false,
-      "add_alternative_destinations": false
-    }
-  ],
   "options": {
-    "include_unpriced_itineraries": true,
+    "include_unpriced_itineraries": false,
     "include_mixed_booking_options": true
   },
   "child_ages": [
 
   ],
   "outboundDate": "StartDateOfJourney",
-  "prefer_directs": false,
+  "prefer_directs": true,
   "state": {
 
   },
-  "tripType": "RETURN",
+  "alternativeOrigins": false,
+  "alternativeDestinations": false,
   "market": "IE",
   "locale": "en-GB",
-  "currency": "EUR"
+  "currency": "EUR",
+  "legs": [
+    {
+      "origin": "DUB",
+      "destination": "AMS",
+      "date": "StartDateOfJourney",
+      "return_date": "EndDateOfJourney",
+      "add_alternative_origins": false,
+      "add_alternative_destinations": false
+    }
+  ]
 }

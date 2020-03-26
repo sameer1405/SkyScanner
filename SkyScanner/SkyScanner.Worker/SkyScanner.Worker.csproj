@@ -6,8 +6,8 @@
   
   <ItemGroup>
     <None Remove="Configuration\PostData\banglore.json" />
+    <None Remove="Configuration\PostData\bom.json" />
     <None Remove="Configuration\PostData\delhi.json" />
-    <None Remove="Configuration\PostData\mumbai.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,23 +17,31 @@
     <Content Include="Configuration\PostData\delhi.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Configuration\PostData\mumbai.json">
+    <Content Include="Configuration\PostData\bom.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ark.Tools.NLog.ConfigurationManager" Version="1.1.8" />
-    <PackageReference Include="Ark.Tools.Nodatime" Version="1.1.8" />
-    <PackageReference Include="Ark.Tools.ResourceWatcher.WorkerHost" Version="1.0.11" />
-    <PackageReference Include="Ark.Tools.ResourceWatcher.WorkerHost.Sql" Version="1.0.11" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.8.14" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="morelinq" Version="3.1.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="Polly" Version="6.1.2" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="Ark.Tools.NLog.ConfigurationManager" Version="2.3.2" />
+    <PackageReference Include="Ark.Tools.Nodatime" Version="2.3.2" />
+    <PackageReference Include="Ark.Tools.ResourceWatcher.WorkerHost" Version="2.3.2" />
+    <PackageReference Include="Ark.Tools.ResourceWatcher.WorkerHost.Sql" Version="2.3.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
+    <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Configuration\PostData\amman.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Configuration\PostData\amsterdam.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Configuration\PostData\eindhoven.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

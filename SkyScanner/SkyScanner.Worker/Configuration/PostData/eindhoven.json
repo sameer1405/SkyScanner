@@ -1,0 +1,59 @@
+{
+  "destination": {
+    "id": "EIN",
+    "airportId": "EIN",
+    "name": "Eindhoven",
+    "cityId": "EIND",
+    "cityName": "Eindhoven",
+    "countryId": "NL",
+    "type": "Airport",
+    "centroidCoordinates": [
+      5.388889,
+      51.453333
+    ]
+  },
+  "origin": {
+    "id": "DUB",
+    "airportId": "DUB",
+    "name": "Dublin",
+    "cityId": "DUBL",
+    "cityName": "Dublin",
+    "countryId": "IE",
+    "type": "Airport",
+    "centroidCoordinates": [
+      -6.252222,
+      53.4325
+    ]
+  },
+  "adults": 1,
+  "cabin_class": "economy",
+  "cabinClass": "ECONOMY",
+  "inboundDate": "EndDateOfJourney",
+  "options": {
+    "include_unpriced_itineraries": false,
+    "include_mixed_booking_options": false
+  },
+  "child_ages": [
+
+  ],
+  "outboundDate": "StartDateOfJourney",
+  "prefer_directs": false,
+  "state": {
+
+  },
+  "alternativeOrigins": false,
+  "alternativeDestinations": false,
+  "market": "IE",
+  "locale": "en-GB",
+  "currency": "EUR",
+  "legs": [
+    {
+      "origin": "DUB",
+      "destination": "EIN",
+      "date": "StartDateOfJourney",
+      "return_date": "EndDateOfJourney",
+      "add_alternative_origins": false,
+      "add_alternative_destinations": false
+    }
+  ]
+}

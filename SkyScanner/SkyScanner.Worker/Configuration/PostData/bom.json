@@ -1,0 +1,62 @@
+﻿{
+  "destination": {
+    "id": "BOM",
+    "airportId": "BOM",
+    "name": "Mumbai",
+    "cityId": "IBOM",
+    "cityName": "Mumbai",
+    "countryId": "IN",
+    "type": "Airport",
+    "centroidCoordinates": [
+      72.851667,
+      19.088056
+    ]
+  },
+  "origin": {
+    "id": "DUB",
+    "airportId": "DUB",
+    "name": "Dublin",
+    "cityId": "DUBL",
+    "cityName": "Dublin",
+    "countryId": "IE",
+    "type": "Airport",
+    "centroidCoordinates": [
+      -6.252222,
+      53.4325
+    ]
+  },
+  "adults": 1,
+  "cabin_class": "economy",
+  "cabinClass": "ECONOMY",
+  "inboundDate": "EndDateOfJourney",
+  "options": {
+    "include_unpriced_itineraries": true,
+    "include_mixed_booking_options": true
+  },
+  "child_ages": [
+
+  ],
+  "outboundDate": "StartDateOfJourney",
+  "prefer_directs": false,
+  "state": {
+
+  },
+  "alternativeOrigins": false,
+  "alternativeDestinations": false,
+  "market": "IE",
+  "locale": "en-GB",
+  "currency": "EUR",
+  "viewId": "ViewIdFromWorker",
+  "travellerContextId": "TravellerContextIdFromWorker",
+  "trusted_funnel_search_guid": "ViewIdFromWorker",
+  "legs": [
+    {
+      "origin": "DUB",
+      "destination": "BOM",
+      "date": "StartDateOfJourney",
+      "return_date": "EndDateOfJourney",
+      "add_alternative_origins": false,
+      "add_alternative_destinations": false
+    }
+  ]
+}

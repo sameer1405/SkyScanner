@@ -8,12 +8,15 @@ using System.Linq;
 using static SkyScanner.SDK.Configuration.Constants.SkyJson;
 using System.Text;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace SkyScanner.SDK.DataProvider
 {
     public class SkyScannerParser_Web
     {
         private Logger _logger = LogManager.GetCurrentClassLogger();
+        private Regex regex = new Regex(@"\d{4}-\d{2}-\d{2}");
 
         public SkyScanner_File Parse(SkyScanner_FileMetadataDto metadata, string rawData)
         {
@@ -34,7 +37,7 @@ namespace SkyScanner.SDK.DataProvider
                 {
                     foreach (var c in b.items)
                     {
-                        if (c.price.amount != 0 && c.price.amount < 800)
+                        if (c.price.amount != 0 && c.price.amount < 500)
                         {
                             var durationGoing = lparsed[0].arrival - lparsed[0].departure.Add(TimeSpan.FromHours(metadata.Tz.BaseUtcOffset.TotalHours));
                             var durationComingBack = lparsed[1].arrival.Add(TimeSpan.FromHours(metadata.Tz.BaseUtcOffset.TotalHours)) - lparsed[1].departure;
@@ -42,19 +45,24 @@ namespace SkyScanner.SDK.DataProvider
                             if (durationGoing < TimeSpan.FromHours(20) && durationComingBack < TimeSpan.FromHours(20))
                             {
                                 var rating = ((999.99 - c.price.amount) + (durationGoing.TotalHours * 9.99) + (durationComingBack.TotalHours * 9.99)) / 100;
+                                var datecount = _getDateCount(c.url.ToString());
 
-                                finalList.Add(new FinalDataToGet
+                                //europe datecount.Count > 6
+                                if (datecount.Count > 8)
                                 {
-                                    UrlFinal = SkyScannerConstants.BaseLink + c.url,
-                                    DateDeparture = lparsed[0].departure,
-                                    DurationGoing = _roundUp(durationGoing.TotalHours),
-                                    DateArrival = lparsed[1].arrival,
-                                    DurationComingBack = _roundUp(durationComingBack.TotalHours),
-                                    Rating = _roundUp(rating),
-                                    AmountMoney = c.price.amount,
-                                    UrlChecksum = _getCheckSumMD5(c.url+counter),
-                                    legParsed = lparsed
-                                });
+                                    finalList.Add(new FinalDataToGet
+                                    {
+                                        UrlFinal = SkyScannerConstants.BaseLink + c.url,
+                                        DateDeparture = lparsed[0].departure,
+                                        DurationGoing = _roundUp(durationGoing.TotalHours),
+                                        DateArrival = lparsed[1].arrival,
+                                        DurationComingBack = _roundUp(durationComingBack.TotalHours),
+                                        Rating = _roundUp(rating),
+                                        AmountMoney = c.price.amount,
+                                        UrlChecksum = _getCheckSumMD5(c.url + counter),
+                                        legParsed = lparsed
+                                    });
+                                }
                                 counter++;
                             }
                         }
@@ -67,6 +75,19 @@ namespace SkyScanner.SDK.DataProvider
                 ParsedData = finalList.Distinct().ToList()
             };
             return parsedData;
+        }
+        private List<DateTime> _getDateCount(string url)
+        {
+            //For india 8 count 
+            //for europe 6 count
+            var datecount = new List<DateTime>();
+
+            foreach (Match m in regex.Matches(url))
+            {
+                if (DateTime.TryParseExact(m.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dt))
+                    datecount.Add(dt);
+            }
+            return datecount;
         }
 
         private double _roundUp(double val)
