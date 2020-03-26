@@ -29,6 +29,9 @@ namespace SkyScanner.SDK.DataProvider
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         public static TimeZoneInfo _zone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         private SkyScannerParser_Web _parser = new SkyScannerParser_Web();
+        private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
+        private Random _rnd = new Random();
+
         private HttpClient _httpClient = new HttpClient(new HttpClientHandler
         {
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
@@ -42,9 +45,13 @@ namespace SkyScanner.SDK.DataProvider
             .Handle<Exception>()
             .WaitAndRetryAsync(new[]
               {
-                            TimeSpan.FromSeconds(3),
-                            TimeSpan.FromSeconds(10),
-                            TimeSpan.FromSeconds(15)
+                            TimeSpan.FromSeconds(15),
+                            TimeSpan.FromSeconds(30),
+                            TimeSpan.FromMinutes(1),
+                            TimeSpan.FromMinutes(1.5),
+                            TimeSpan.FromMinutes(5),
+                            TimeSpan.FromMinutes(10),
+
               }, (ex, ts) =>
               {
                   _logger.Warn(ex, $"Failed download. Trying again in {ts} seconds...");
@@ -60,12 +67,12 @@ namespace SkyScanner.SDK.DataProvider
                 foreach (var travelDay in range)
                 {
                     var year = DateTime.Now.Year;
-                    var months = new int[] {  4, 5, 6 };
+                    var months = new int[] {  4 };
 
                     foreach (var days in _getDays(year, months))
                     {
                         ////temporary should be changed
-                        //if (days.Day >= 7)
+                        if (days.Day >= 15)
                         {
                             metadataList.Add(new SkyScanner_FileMetadataDto()
                             {
@@ -75,7 +82,8 @@ namespace SkyScanner.SDK.DataProvider
                                 From = days,
                                 To = days.AddDays(travelDay),
                                 Tz = _zone,
-                                NoDays = travelDay
+                                NoDays = travelDay,
+
                             });
                         }
                     }
@@ -112,12 +120,25 @@ namespace SkyScanner.SDK.DataProvider
         public async Task<SkyScanner_File> GetResource(SkyScanner_FileMetadataDto metadata, IResourceTrackedState lastState, CancellationToken ctk = default)
         {
             var resId = string.Format("{0}_{1}_{2}_{3}", metadata.FromPlace, metadata.From.Date.ToString("dd-MM-yyyy"), metadata.ToPlace, metadata.To.Date.ToString("dd-MM-yyyy"));
-            if (lastState?.ResourceId == resId)
+            if (lastState?.ResourceId == resId && lastState?.RetryCount == 0)
                 return null;
 
             var rawData = await retrier.ExecuteAsync(async ct =>
             {
-                return await _getRawData(metadata, ctk);
+                await _semaphoreSlim.WaitAsync();
+                try
+                {
+                    int number = _rnd.Next(45, 120);
+
+                    //to avaoid ban
+                    await Task.Delay(TimeSpan.FromSeconds(number));
+                    return await _getRawData(metadata, ct);
+                }
+                finally
+                {
+                    _semaphoreSlim.Release();
+                }
+
             }, ctk);
 
             if (rawData == null)
@@ -185,15 +206,11 @@ namespace SkyScanner.SDK.DataProvider
             }
         }
 
-
         public async Task<string> _getRawData(SkyScanner_FileMetadataDto meta, CancellationToken ctk)
         {
-            Thread.Sleep(TimeSpan.FromSeconds(2));
-
             var initialLink = string.Format(InitialLink, meta.FromPlace, meta.ToPlace, meta.From.ToString("yyMMdd"), meta.To.ToString("yyMMdd"));
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36");
 
-            using (var l = await _httpClient.GetAsync(BaseLink))
             using (var webPage = await _httpClient.GetAsync(initialLink, ctk))
             {
                 if (webPage.IsSuccessStatusCode)
@@ -203,7 +220,7 @@ namespace SkyScanner.SDK.DataProvider
                     var utId = _filterPattern.Replace(_utId.Match(wb).Value, string.Empty);
                     if (string.IsNullOrEmpty(viewId) || string.IsNullOrEmpty(utId))
                     {
-                        _logger.Fatal("Unable to parse viewId and utId.. Please check regex pattern");
+                        throw new Exception($"Unable to parse viewId and utId.. Please check regex pattern from webpage {wb}");
                     }
 
                     var postData = _getPostData(meta, viewId, utId);
@@ -235,8 +252,7 @@ namespace SkyScanner.SDK.DataProvider
                                 }
                                 else
                                 {
-                                    _logger.Warn($"Failed download metadata for id no.");
-                                    return null;
+                                    throw new Exception($"Unable to download the webpage string from {PostUrl} with error {response.StatusCode}");
                                 }
                             }
                         }
